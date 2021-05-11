@@ -10,45 +10,36 @@ import { testWrapper } from '../helpers/helpers';
     testWrapper(
         "checking counter component", 
         [
-            {checkTitle: "shouldn't brake", comp: <Counter {...{initialCount}}/>},
-            {checkTitle: "should mount on 0", comp: <Counter {...{initialCount}}/>, shouldDisplay: true},
-            {checkTitle: "should be blue and borderless", comp: <Counter {...{initialCount}}/>, checkStyling: {border: "", "background-color": "blue", "border-radius": "10px"}}, 
-            {checkTitle: "with 27", comp: <Counter {...{initialCount}}/>, expectMatch: "27"}, 
-            {checkTitle: "no children", comp: <Counter {...{initialCount}}/>, checkChildren: {childAmount: 1}},
-            {checkTitle: "3 lis elements", comp: <Counter {...{initialCount}}/>, checkChildren: {childAmount: 3, elementQuery: (element: Element) => element.querySelector("ul")!}},
-            {checkTitle: "display 29 after clicking 2 times", comp: <Counter {...{initialCount}}/>, 
+            {
+                checkTitle: "should display, show 27, blue and borderless, with 1 child", 
+                comp: <Counter {...{initialCount}}/>, 
+                shouldDisplay: true, 
+                expectMatch: "27", 
+                checkStyling: {border: "", "background-color": "blue", "border-radius": "10px"}, 
+                checkChildren: {childAmount: 1}
+            },
+
+            {
+                checkTitle: "3 lis elements", 
+                comp: <Counter {...{initialCount}}/>, 
+                checkChildren: {childAmount: 3, elementQuery: (el: Element) => el.querySelector("ul")!}
+            },
+
+            {
+                checkTitle: "display 29 after clicking 2 times", 
+                comp: <Counter {...{initialCount}}/>, 
                 actions: [
-                    {actionLabel: "click", elementQuery: (el: Element) => el}, 
-                    {actionLabel: "click", elementQuery: (el: Element) => el}
+                    {actionLabel: "click"}, 
+                    {actionLabel: "click"}
                 ], 
                 expectMatch: "29"
             },
-        ]
-    )  
 
-    initialCount = 5000;
-
-    testWrapper(
-        "checking counter component", 
-        [
-            {checkTitle: "shouldn't display on 5000", comp: <Counter {...{initialCount}}/>, shouldDisplay: false},
+            {
+                checkTitle: "shouldn't display on initialCount=5000", 
+                comp: <Counter initialCount={5000}/>, 
+                shouldDisplay: false
+            },
         ]
     )  
 })()
-
-// describe("checking click", () => {
-
-//     let div : HTMLDivElement;
-//     div = document.createElement("div");
-//     test("clicking and changing", async () => {
-    
-//     ReactDOM.render(<Counter initialCount={0}/>, div);
-//     await ReactTestUtils.Simulate.click(div.children[0]);
-//     await ReactTestUtils.Simulate.click(div.children[0]);
-//     await ReactTestUtils.Simulate.click(div.children[0]);
-//     await ReactTestUtils.Simulate.click(div.children[0]);
-
-//     expect(div.textContent).toMatch("4");
-
-//     })
-// })

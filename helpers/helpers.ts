@@ -33,7 +33,7 @@ export type fetchType = (input: RequestInfo, init?: RequestInit | undefined) => 
 
 interface TestingAction{
     actionLabel: string;
-    elementQuery: (element: Element) => Element;
+    elementQuery?: (element: Element) => Element;
 }
 
 export interface Case{
@@ -73,7 +73,7 @@ export function testWrapper(title: string, cases: Case[], callMock?: fetchType){
                 if(c.actions){
                     c.actions.forEach(async a => {
                         let action = (ReactTestUtils.Simulate  as any)[a.actionLabel]
-                        if(action) await action(a.elementQuery(compDom));
+                        if(action) await action(a.elementQuery ? a.elementQuery(compDom) : compDom);
                     })
                 }
 
