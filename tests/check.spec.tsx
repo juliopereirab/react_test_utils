@@ -14,8 +14,8 @@ import { testWrapper } from '../helpers/helpers';
             {checkTitle: "should mount on 0", comp: <Counter {...{initialCount}}/>, shouldDisplay: true},
             {checkTitle: "should be blue and borderless", comp: <Counter {...{initialCount}}/>, checkStyling: {border: "", "background-color": "blue", "border-radius": "10px"}}, 
             {checkTitle: "with 27", comp: <Counter {...{initialCount}}/>, expectMatch: "27"}, 
-            {checkTitle: "no children", comp: <Counter {...{initialCount}}/>, childNumber: 0},
-            {checkTitle: "3 lis elements", comp: <Counter {...{initialCount}}/>, childNumber: 3, elementQuery: (element: Element) => element.querySelector("ul")!},
+            {checkTitle: "no children", comp: <Counter {...{initialCount}}/>, checkChildren: {childAmount: 1}},
+            {checkTitle: "3 lis elements", comp: <Counter {...{initialCount}}/>, checkChildren: {childAmount: 3, elementQuery: (element: Element) => element.querySelector("ul")!}},
             {checkTitle: "display 29 after clicking 2 times", comp: <Counter {...{initialCount}}/>, 
                 actions: [
                     {actionLabel: "click", elementQuery: (el: Element) => el}, 
@@ -31,7 +31,7 @@ import { testWrapper } from '../helpers/helpers';
     testWrapper(
         "checking counter component", 
         [
-            {checkTitle: "shouldn't display on 5000", comp: <Counter {...{initialCount}}/>, noDisplay: true},
+            {checkTitle: "shouldn't display on 5000", comp: <Counter {...{initialCount}}/>, shouldDisplay: false},
         ]
     )  
 })()

@@ -40,11 +40,9 @@ export interface Case{
     comp: JSX.Element, 
     checkTitle: string, 
     expectMatch?: string, 
-    childNumber?: number, 
-    shouldDisplay?: boolean,
-    noDisplay?: boolean, 
+    checkChildren?: {childAmount: number, elementQuery?: (element: Element) => Element}, 
+    shouldDisplay?: boolean | undefined,
     checkStyling?: {[key: string]: string}, 
-    elementQuery?: (element: Element) => Element
     actions?: TestingAction[]
 }
 
@@ -80,10 +78,13 @@ export function testWrapper(title: string, cases: Case[], callMock?: fetchType){
                 }
 
 
-                if(c.shouldDisplay) expect(compDom).toBeTruthy();
-                if(c.noDisplay) expect(compDom).not.toBeTruthy();
+                if(c.shouldDisplay === true) expect(compDom).toBeTruthy();
+                if(c.shouldDisplay === false) expect(compDom).not.toBeTruthy();
                 if(c.expectMatch) expect(compDom.textContent).toMatch(c.expectMatch);
-                if(c.childNumber) expect((c.elementQuery ? c.elementQuery(compDom) : compDom)?.childElementCount).toBe(c.childNumber);
+                if(c.checkChildren){
+                    let {childAmount, elementQuery} = c.checkChildren
+                    expect((elementQuery ? elementQuery(compDom) : compDom)?.childElementCount).toBe(childAmount);
+                }
                 if(c.checkStyling){
                     const style = window.getComputedStyle(compDom);
                     Object.keys(c.checkStyling).forEach(k => {
